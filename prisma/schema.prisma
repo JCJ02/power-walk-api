@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int       @id @default(autoincrement())
+  firstname String
+  lastname  String
+  email     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  role      String    @default("Admin")
+  account   Account[]
+}
+
+model Account {
+  id        Int       @id @default(autoincrement())
+  password  String
+  adminId   Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  admin     Admin?    @relation(fields: [adminId], references: [id])
+}
+
+model Student {
+  id          Int       @id @default(autoincrement())
+  uid         String
+  studentId   String
+  firstname   String
+  lastname    String
+  middlename  String?
+  email       String
+  dateOfBirth DateTime
+  address     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+}
+
+model Battery {
+  id                Int       @id @default(autoincrement())
+  batteryPercentage String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+}
+
+model Electricity {
+  id                     Int       @id @default(autoincrement())
+  electricityConsumption String?
+  generatedElectricity   String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  deletedAt              DateTime?
+}
