@@ -31,7 +31,7 @@ model Account {
 
 model Student {
   id          Int       @id @default(autoincrement())
-  uid         String
+  uid         Int
   studentId   String
   firstname   String
   lastname    String
