@@ -77,7 +77,6 @@ class StudentRepository {
             where: {
                 deletedAt: null,
                 OR: [
-                    { uid: { contains: query } },
                     { studentId: { contains: query } },
                     { firstname: { contains: query } },
                     { lastname: { contains: query } },
@@ -96,7 +95,6 @@ class StudentRepository {
             where: {
                 deletedAt: null,
                 OR: [
-                    { uid: { contains: query} },
                     { studentId: { contains: query} },
                     { firstname: { contains: query } },
                     { lastname: { contains: query } },
