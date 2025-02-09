@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 const createStudentSchema = z.object({
-    uid: z.number().min(1, "RFID is Required!"),
+    uid: z.coerce.number({
+        invalid_type_error: "Description Must Be Numbers!"
+    }).min(1, "RFID is Required!"),
     studentId: z.string()
         .min(1, "Student ID is Required!"),
     firstname: z.string()
