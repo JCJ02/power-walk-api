@@ -1,5 +1,5 @@
 type BaseStudentType = {
-    uid: string,
+    uid: number,
     studentId: string,
     firstname: string,
     lastname: string,
@@ -25,7 +25,7 @@ type StudentType = BaseStudentType & {
 
 type UpdateStudentType = BaseUpdateStudentType & {
     id?: number,
-    uid?: string
+    uid?: number
 }
 
 export {
