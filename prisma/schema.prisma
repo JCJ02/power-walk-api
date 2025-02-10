@@ -47,6 +47,7 @@ model Student {
 model Battery {
   id                Int       @id @default(autoincrement())
   batteryPercentage String?
+  current           String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   deletedAt         DateTime?
