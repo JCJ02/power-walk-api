@@ -44,6 +44,14 @@ model Student {
   deletedAt   DateTime?
 }
 
+model Rfid {
+  id        Int       @id @default(autoincrement())
+  uid       String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
 model Battery {
   id                Int       @id @default(autoincrement())
   batteryPercentage String?
