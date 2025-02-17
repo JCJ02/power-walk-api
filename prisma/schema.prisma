@@ -65,6 +65,7 @@ model Electricity {
   id                     Int       @id @default(autoincrement())
   electricityConsumption String?
   electricityGenerated   String?
+  totalHours             Int?
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
   deletedAt              DateTime?
