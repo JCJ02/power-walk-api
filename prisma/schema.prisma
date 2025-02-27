@@ -7,29 +7,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
+model account {
+  id        Int       @id @default(autoincrement())
+  password  String
+  adminId   Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime
+  deletedAt DateTime?
+  admin     admin?    @relation(fields: [adminId], references: [id], map: "Account_adminId_fkey")
+
+  @@index([adminId], map: "Account_adminId_fkey")
+}
+
+model admin {
   id        Int       @id @default(autoincrement())
   firstname String
   lastname  String
   email     String
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime
   deletedAt DateTime?
   role      String    @default("Admin")
-  account   Account[]
+  account   account[]
 }
 
-model Account {
+model battery {
+  id                Int       @id @default(autoincrement())
+  batteryPercentage String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime
+  deletedAt         DateTime?
+  current           String?
+}
+
+model electricity {
+  id                     Int       @id @default(autoincrement())
+  electricityConsumption String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime
+  deletedAt              DateTime?
+  electricityGenerated   String?
+  totalHours             Int?
+}
+
+model history {
+  id         Int    @id @default(autoincrement())
+  uid2       String @db.Text
+  date_added String @db.Text
+}
+
+model rfid {
   id        Int       @id @default(autoincrement())
-  password  String
-  adminId   Int?
+  uid       String
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime
   deletedAt DateTime?
-  admin     Admin?    @relation(fields: [adminId], references: [id])
 }
 
-model Student {
+model student {
   id          Int       @id @default(autoincrement())
   uid         Int
   studentId   String
@@ -40,33 +75,6 @@ model Student {
   dateOfBirth DateTime
   address     String
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime
   deletedAt   DateTime?
-}
-
-model Rfid {
-  id        Int       @id @default(autoincrement())
-  uid       String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-}
-
-model Battery {
-  id                Int       @id @default(autoincrement())
-  batteryPercentage String?
-  current           String?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  deletedAt         DateTime?
-}
-
-model Electricity {
-  id                     Int       @id @default(autoincrement())
-  electricityConsumption String?
-  electricityGenerated   String?
-  totalHours             Int?
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
-  deletedAt              DateTime?
 }
