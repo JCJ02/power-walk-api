@@ -25,7 +25,7 @@ model admin {
   lastname  String
   email     String
   createdAt DateTime  @default(now())
-  updatedAt DateTime
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
   role      String    @default("Admin")
   account   account[]
@@ -35,7 +35,7 @@ model battery {
   id                Int       @id @default(autoincrement())
   batteryPercentage String?
   createdAt         DateTime  @default(now())
-  updatedAt         DateTime
+  updatedAt         DateTime  @updatedAt
   deletedAt         DateTime?
   current           String?
 }
@@ -44,7 +44,7 @@ model electricity {
   id                     Int       @id @default(autoincrement())
   electricityConsumption String?
   createdAt              DateTime  @default(now())
-  updatedAt              DateTime
+  updatedAt              DateTime  @updatedAt
   deletedAt              DateTime?
   electricityGenerated   String?
   totalHours             Int?
@@ -60,7 +60,7 @@ model rfid {
   id        Int       @id @default(autoincrement())
   uid       String
   createdAt DateTime  @default(now())
-  updatedAt DateTime
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
@@ -75,6 +75,6 @@ model student {
   dateOfBirth DateTime
   address     String
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
 }
