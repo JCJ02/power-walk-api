@@ -50,18 +50,18 @@ app.get("/", (req, res) => {
 
 const port = process.env.PORT || 8080;
 
-// 🚀 Set up SerialPort (Adjust "COM3" based on your Arduino port)
+// SET UPT SerialPort (ADJUST "COM3" BASED ON YOU ARDUINO PORT)
 const serialPort = new SerialPort({ path: "COM3", baudRate: 9600 });
 const parser = serialPort.pipe(new ReadlineParser({ delimiter: "\n" }));
 
-// 🎯 Read RFID UID and send to React via WebSockets
+// READ RFID UID AND SEND TO REACT VIA WEBSOCKETS
 parser.on("data", (data: any) => {
     const cleanedData = data.trim().replace(/^UID:\s*/, ""); // Remove "UID: "
     console.log("Scanned RFID UID:", cleanedData);
     io.emit("rfidData", cleanedData); // Send cleaned UID to frontend
 });
 
-// ✅ Start the server correctly
+// START THE SERVER CORRECTLY
 server.listen(port, () => {
     console.log(`SERVER IS RUNNING ON PORT ${port}`);
 });
