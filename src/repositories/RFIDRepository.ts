@@ -77,7 +77,7 @@ class RFIDRepository {
         // });
 
         const fiveDaysAgo = new Date();
-        fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+        fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 7);
 
         const historyRecords = await prisma.history.findMany({
             where: {
