@@ -47,7 +47,7 @@ model electricity {
   updatedAt              DateTime  @updatedAt
   deletedAt              DateTime?
   electricityGenerated   String?
-  totalHours             Int?
+  totalHours             Decimal?  @db.Decimal(10, 2)
 }
 
 model history {
