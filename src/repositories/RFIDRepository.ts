@@ -66,6 +66,31 @@ class RFIDRepository {
         }
     }
 
+    // GET THE HISTORY FUNCTION
+    async history() {
+        // const today = new Date().toISOString().split("T")[0];
+
+        // return prisma.history.findMany({
+        //     where: {
+        //         date_added: today
+        //     }
+        // });
+
+        const historyRecords = await prisma.history.findMany();
+
+        // GROUP DATA BY date_added ND COUNT OCCURRENCES
+        const groupedData = historyRecords.reduce((occurrences: Record<string, number>, record) => {
+            occurrences[record.date_added] = (occurrences[record.date_added] || 0) + 1;
+            return occurrences;
+        }, {});
+
+        // CONVERT OBJECT TO ARRAY FORMAT
+        return Object.entries(groupedData).map(([date_added, count]) => ({
+            date_added,
+            uid2: count,
+        }));
+    }
+
 }
 
 export default RFIDRepository;

@@ -37,7 +37,10 @@ class RFIDService {
         return await this.rfidRepository.list(query, skip, limit);
     }
 
-
+    // GET THE HISTORY FUNCTION
+    async history() {
+        return  await this.rfidRepository.history();
+    }
 
 }
 

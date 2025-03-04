@@ -12,6 +12,7 @@ class RFIDController {
 
         this.create = this.create.bind(this);
         this.list = this.list.bind(this);
+        this.history = this.history.bind(this);
 
     }
 
@@ -70,7 +71,41 @@ class RFIDController {
                 code: 200
             });
         } catch (error: any) {
-            
+            return AppResponse.sendErrors({
+                res,
+                data: null,
+                message: error.message,
+                code: 500
+            });
+        }
+    }
+
+    // GET THE HISTORY FUNCTION
+    async history(req: Request, res: Response) {
+        try {
+            const historyRecords = await this.rfidService.history();
+            if(!historyRecords) {
+                return AppResponse.sendErrors({
+                    res,
+                    data: null,
+                    message: "Failed to Fetch!",
+                    code: 200
+                });
+            } else {
+                return AppResponse.sendSuccessful({
+                    res,
+                    data: historyRecords,
+                    message: "Daily Usage Fetched Successfully",
+                    code: 200
+                });
+            }
+        } catch (error: any) {
+            return AppResponse.sendErrors({
+                res,
+                data: null,
+                message: error.message,
+                code: 500
+            });
         }
     }
 }
