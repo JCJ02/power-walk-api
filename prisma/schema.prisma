@@ -34,10 +34,10 @@ model admin {
 model battery {
   id                Int       @id @default(autoincrement())
   batteryPercentage String?
+  batteryVoltage    String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   deletedAt         DateTime?
-  current           String?
 }
 
 model electricity {
