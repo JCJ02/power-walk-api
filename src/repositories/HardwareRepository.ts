@@ -9,7 +9,8 @@ class HardwareRepository {
                 deletedAt: null
             },
             select: {
-                batteryPercentage: true
+                batteryPercentage: true,
+                batteryVoltage: true
             }
         });
     }
