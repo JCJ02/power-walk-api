@@ -14,9 +14,7 @@ model account {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  admin     admin?    @relation(fields: [adminId], references: [id], map: "Account_adminId_fkey")
-
-  @@index([adminId], map: "Account_adminId_fkey")
+  admin     admin?    @relation(fields: [adminId], references: [id])
 }
 
 model admin {
@@ -43,17 +41,28 @@ model battery {
 model electricity {
   id                     Int       @id @default(autoincrement())
   electricityConsumption String?
+  electricityGenerated   String?
+  totalHours             Decimal?  @db.Decimal(10, 2)
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
   deletedAt              DateTime?
-  electricityGenerated   String?
-  totalHours             Decimal?  @db.Decimal(10, 2)
+}
+
+model electricity_meter {
+  id                          Int       @id @default(autoincrement())
+  dailyElectricityGenerated   Decimal?  @db.Decimal(10, 2)
+  dailyElectricityConsumption Decimal?  @db.Decimal(10, 2)
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
+  deletedAt                   DateTime?
 }
 
 model history {
-  id         Int    @id @default(autoincrement())
-  uid2       String @db.Text
-  date_added String @db.Text
+  id        Int       @id @default(autoincrement())
+  rfid_uid  String    @db.Text
+  createdAt String    @db.Text
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }
 
 model rfid {

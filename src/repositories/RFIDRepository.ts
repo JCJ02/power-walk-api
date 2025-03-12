@@ -24,8 +24,8 @@ class RFIDRepository {
         return isRFIDExisting;
     }
 
-     // LIST OF RFIDs w/ SEARCH and PAGINATION FUNCTION
-     async list(query: string, skip: number, limit: number) {
+    // LIST OF RFIDs w/ SEARCH and PAGINATION FUNCTION
+    async list(query: string, skip: number, limit: number) {
         const parsedDate = !isNaN(Date.parse(query)) ? new Date(query) : undefined;
         const rfidFilters = [];
 
@@ -68,39 +68,19 @@ class RFIDRepository {
 
     // GET THE HISTORY FUNCTION
     async history() {
-        // const today = new Date().toISOString().split("T")[0];
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-        // return prisma.history.findMany({
-        //     where: {
-        //         date_added: today
-        //     }
-        // });
-
-        const fiveDaysAgo = new Date();
-        fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 7);
-
-        const historyRecords = await prisma.history.findMany({
+        return await prisma.history.findMany({
             where: {
-                date_added: {
-                    gt: fiveDaysAgo.toISOString().split("T")[0], // GET RECORDS FROM THE LAST 5 DAYS
+                createdAt: {
+                    gt: sevenDaysAgo.toISOString().split("T")[0], // GET RECORDS FROM THE LAST 5 DAYS
                 },
             },
             orderBy: {
-                date_added: "asc",
+                createdAt: "asc"
             },
         });
-
-        // GROUP DATA BY date_added AND COUNT OCCURRENCES
-        const groupedData = historyRecords.reduce((occurrences: Record<string, number>, record) => {
-            occurrences[record.date_added] = (occurrences[record.date_added] || 0) + 1;
-            return occurrences;
-        }, {});
-
-        // CONVERT OBJECT TO ARRAY FORMAT
-        return Object.entries(groupedData).map(([date_added, count]) => ({
-            date_added,
-            uid2: count,
-        }));
     }
 
 }

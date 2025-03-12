@@ -8,5 +8,6 @@ const hardwareController = new HardwareController();
 hardwareRoute.get("/", authenticationMiddleware, hardwareController.get);
 hardwareRoute.get("/electricity-generated", authenticationMiddleware, hardwareController.getElectrictyGenerated);
 hardwareRoute.get("/electricity-consumption", authenticationMiddleware, hardwareController.getElectricityConsumption);
+hardwareRoute.get("/electricity-meter", authenticationMiddleware, hardwareController.getElectricityMeter);
 
 export default hardwareRoute;
