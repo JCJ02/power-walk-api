@@ -7,12 +7,13 @@ class HardwareController {
     private hardwareService;
 
     constructor() {
-        
+
         this.hardwareService = new HardwareService();
 
         this.get = this.get.bind(this);
         this.getElectrictyGenerated = this.getElectrictyGenerated.bind(this);
         this.getElectricityConsumption = this.getElectricityConsumption.bind(this);
+        this.getElectricityMeter = this.getElectricityMeter.bind(this);
 
     }
 
@@ -67,6 +68,27 @@ class HardwareController {
                 res,
                 data: electricityConsumption,
                 message: "Electricity Consumption",
+                code: 200
+            });
+        } catch (error: any) {
+            return AppResponse.sendErrors({
+                res,
+                data: null,
+                message: error.message,
+                code: 500
+            });
+        }
+    }
+
+    // GET THE ELECTRICITY GENERATED AND CONSUMPTION PER DAY FUNCTION
+    async getElectricityMeter(req: Request, res: Response) {
+        try {
+            const electricityMeter = await this.hardwareService.getElectricityMeter();
+
+            return AppResponse.sendSuccessful({
+                res,
+                data: electricityMeter,
+                message: "Electricity Meter",
                 code: 200
             });
         } catch (error: any) {

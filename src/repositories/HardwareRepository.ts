@@ -39,6 +39,21 @@ class HardwareRepository {
         });
     }
 
+    // GET THE ELECTRICITY GENERATED AND CONSUMPTION PER DAY FUNCTION
+    async getElectricityMeter() {
+        return await prisma.electricity_meter.groupBy({
+            by: ['createdAt'],
+            where: {
+                deletedAt: null
+            },
+            _sum: {
+                dailyElectricityGenerated: true,
+                dailyElectricityConsumption: true
+            }
+        });
+    }
+
+
 }
 
 export default HardwareRepository;

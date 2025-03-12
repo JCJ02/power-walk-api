@@ -7,7 +7,7 @@ class RFIDController {
     private rfidService;
 
     constructor() {
-        
+
         this.rfidService = new RFIDService();
 
         this.create = this.create.bind(this);
@@ -22,7 +22,7 @@ class RFIDController {
 
             const validateRFID = createRFIDSchema.safeParse(req.body);
 
-            if(validateRFID.error) {
+            if (validateRFID.error) {
                 return AppResponse.sendErrors({
                     res,
                     data: null,
@@ -48,7 +48,7 @@ class RFIDController {
                     code: 201
                 });
             }
-            
+
         } catch (error: any) {
             return AppResponse.sendErrors({
                 res,
@@ -84,7 +84,7 @@ class RFIDController {
     async history(req: Request, res: Response) {
         try {
             const historyRecords = await this.rfidService.history();
-            if(!historyRecords) {
+            if (!historyRecords) {
                 return AppResponse.sendErrors({
                     res,
                     data: null,
