@@ -84,21 +84,31 @@ class RFIDRepository {
                 date_added: {
                     gt: fiveDaysAgo.toISOString().split("T")[0], // GET RECORDS FROM THE LAST 5 DAYS
                 },
+                // createdAt: {
+                //     gt: fiveDaysAgo.toISOString().split("T")[0], // GET RECORDS FROM THE LAST 5 DAYS
+                // },
             },
             orderBy: {
                 date_added: "asc",
+                // createAt: "asc"
             },
         });
 
         // GROUP DATA BY date_added AND COUNT OCCURRENCES
         const groupedData = historyRecords.reduce((occurrences: Record<string, number>, record) => {
             occurrences[record.date_added] = (occurrences[record.date_added] || 0) + 1;
+            // occurrences[record.date_added] = (occurrences[record.createdAt] || 0) + 1;
             return occurrences;
         }, {});
 
         // CONVERT OBJECT TO ARRAY FORMAT
-        return Object.entries(groupedData).map(([date_added, count]) => ({
+        return Object.entries(groupedData).map(([
+            date_added, 
+            // createdAt, 
+            count
+        ]) => ({
             date_added,
+            // createdAt,
             uid2: count,
         }));
     }

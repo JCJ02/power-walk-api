@@ -51,9 +51,13 @@ model electricity {
 }
 
 model history {
-  id         Int    @id @default(autoincrement())
-  uid2       String @db.Text
-  date_added String @db.Text
+  id         Int       @id @default(autoincrement())
+  uid2       String    @db.Text
+  // rfid_uid       String @db.Text
+  date_added String    @db.Text
+  // createdAt  String @db.Text
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
 }
 
 model rfid {
