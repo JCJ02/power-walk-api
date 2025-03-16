@@ -2,6 +2,8 @@ import AdminRepository from "../repositories/AdminRepository";
 import { adminAccountType } from "../types/AdminType";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/token";
+import { sendAccountDetails } from "../utils/sendAccountDetails";
+import prisma from "../utils/prismaClient";
 
 class AdminService {
     private adminRepository;
@@ -15,9 +17,9 @@ class AdminService {
     async create(data: adminAccountType) {
         const isEmailExist = await this.adminRepository.validateEmail(data.email);
 
-        if(isEmailExist) {
+        if (isEmailExist) {
             return null;
-        } 
+        }
 
         const hashedPassword = bcrypt.hashSync(data.password, 10);
         //console.log(data.password);
@@ -25,10 +27,36 @@ class AdminService {
             ...data,
             password: hashedPassword,
         };
-        //console.log(hashedPassword);
-        const signUp = await this.adminRepository.create(adminData);
 
-        return signUp;
+        // //console.log(hashedPassword);
+        // const signUp = await this.adminRepository.create(adminData);
+
+        // return signUp;
+        const create = await prisma.$transaction(async (prismaTrasaction) => {
+
+            const newAdmin = await this.adminRepository.create(adminData, prismaTrasaction);
+
+            try {
+
+                await sendAccountDetails({
+                    firstname: data.firstname,
+                    lastname: data.lastname,
+                    email: data.email,
+                    password: data.password,
+                    to: data.email,
+                    subject: "Your Admin Account Details",
+                });
+
+            } catch (error: any) {
+                console.error("Failed To Send Email, Rolling Back Transaction: ", error.stack);
+                throw new Error("Email Sending Failed; Rolling Back Transaction");
+            }
+
+            return newAdmin;
+
+        });
+
+        return create;
     }
 
     // SHOW METHOD

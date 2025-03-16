@@ -3,27 +3,40 @@ import prisma from "../utils/prismaClient";
 
 class AdminRepository {
     // CREATE ADMIN FUNCTION
-    async create(data: adminAccountType) {
-        const signUp = await prisma.$transaction(async (prisma) => {
-            return await prisma.admin.create({
-                data: {
-                    firstname: data.firstname,
-                    lastname: data.lastname,
-                    email: data.email,
-                    account: {
-                        create: {
-                            password: data.password
-                        }
+    async create(data: adminAccountType, prismaTransaction: any) {
+        // const signUp = await prisma.$transaction(async (prisma) => {
+        //     return await prisma.admin.create({
+        //         data: {
+        //             firstname: data.firstname,
+        //             lastname: data.lastname,
+        //             email: data.email,
+        //             account: {
+        //                 create: {
+        //                     password: data.password
+        //                 }
+        //             }
+        //         }
+        //     });
+        // });
+
+        const signUp = await prismaTransaction.admin.create({
+            data: {
+                firstname: data.firstname,
+                lastname: data.lastname,
+                email: data.email,
+                account: {
+                    create: {
+                        password: data.password
                     }
                 }
-            });
+            }
         });
 
         return signUp;
     }
 
-     // SHOW FUNCTION
-     async show(id: number) {
+    // SHOW FUNCTION
+    async show(id: number) {
         const admin = await prisma.admin.findFirst({
             where: {
                 id: id,
