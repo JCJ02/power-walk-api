@@ -40,11 +40,15 @@ class HardwareRepository {
     }
 
     // GET THE ELECTRICITY GENERATED AND CONSUMPTION PER DAY FUNCTION
-    async getElectricityMeter() {
+    async getElectricityMeter(fromDate?: string, toDate?: string) {
         return await prisma.electricity_meter.groupBy({
             by: ['createdAt'],
             where: {
-                deletedAt: null
+                deletedAt: null,
+                createdAt: {
+                    gte: fromDate ? new Date(`${fromDate}T00:00:00.000Z`) : undefined,
+                    lte: toDate ? new Date(`${toDate}T23:59:59.999Z`) : undefined,
+                }
             },
             _sum: {
                 dailyElectricityGenerated: true,
@@ -52,7 +56,6 @@ class HardwareRepository {
             }
         });
     }
-
 
 }
 

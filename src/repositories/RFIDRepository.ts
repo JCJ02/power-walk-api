@@ -67,16 +67,33 @@ class RFIDRepository {
     }
 
     // GET THE HISTORY FUNCTION
-    async history() {
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    async history(fromDate?: string, toDate?: string) {
+        // const sevenDaysAgo = new Date();
+        // sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        const whereClause: any = {};
+
+        if (fromDate && toDate) {
+            whereClause.createdAt = {
+                gte: new Date(fromDate).toISOString(),
+                lte: new Date(toDate).toISOString(),
+            };
+        } else {
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+            whereClause.createdAt = {
+                gte: sevenDaysAgo.toISOString().split("T")[0],
+            };
+        }
 
         return await prisma.history.findMany({
-            where: {
-                createdAt: {
-                    gt: sevenDaysAgo.toISOString().split("T")[0], // GET RECORDS FROM THE LAST 5 DAYS
-                },
-            },
+            where: whereClause,
+            // where: {
+            //     createdAt: {
+            //         gt: sevenDaysAgo.toISOString().split("T")[0], // GET RECORDS FROM THE LAST 5 DAYS
+            //     },
+            // },
             orderBy: {
                 createdAt: "asc",
             },
