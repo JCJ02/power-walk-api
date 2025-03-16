@@ -83,7 +83,9 @@ class RFIDController {
     // GET THE HISTORY FUNCTION
     async history(req: Request, res: Response) {
         try {
-            const historyRecords = await this.rfidService.history();
+            const { from, to } = req.query;
+            // const historyRecords = await this.rfidService.history();
+            const historyRecords = await this.rfidService.history(from as string, to as string);
             if (!historyRecords) {
                 return AppResponse.sendErrors({
                     res,

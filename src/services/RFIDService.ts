@@ -38,24 +38,34 @@ class RFIDService {
     }
 
     // GET THE HISTORY FUNCTION
-    async history() {
-        const historyRecords = await this.rfidRepository.history();
+    async history(fromDate?: string, toDate?: string) {
+        // const historyRecords = await this.rfidRepository.history();
+        const historyRecords = await this.rfidRepository.history(fromDate, toDate);
 
-        // GROUP DATA BY date_added AND COUNT OCCURRENCES
+        // GROUP DATA BY createdAt AND COUNT OCCURRENCES
+        // const groupedData = historyRecords.reduce((occurrences: Record<string, number>, record) => {
+        //     // occurrences[record.date_added] = (occurrences[record.date_added] || 0) + 1;
+        //     occurrences[record.createdAt] = (occurrences[record.createdAt] || 0) + 1;
+        //     return occurrences;
+        // }, {});
         const groupedData = historyRecords.reduce((occurrences: Record<string, number>, record) => {
-            // occurrences[record.date_added] = (occurrences[record.date_added] || 0) + 1;
-            occurrences[record.createdAt] = (occurrences[record.createdAt] || 0) + 1;
+            const date = record.createdAt.toString().split("T")[0]; // Format to YYYY-MM-DD
+            occurrences[date] = (occurrences[date] || 0) + 1;
             return occurrences;
         }, {});
 
         // CONVERT OBJECT TO ARRAY FORMAT
-        return Object.entries(groupedData).map(([
-            createdAt,
-            // date_added, 
-            count
-        ]) => ({
-            // date_added,
-            // uid2: count,
+        // return Object.entries(groupedData).map(([
+        //     createdAt,
+        //     // date_added, 
+        //     count
+        // ]) => ({
+        //     // date_added,
+        //     // uid2: count,
+        //     createdAt,
+        //     rfid_uid: count,
+        // }));
+        return Object.entries(groupedData).map(([createdAt, count]) => ({
             createdAt,
             rfid_uid: count,
         }));
