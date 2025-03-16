@@ -50,6 +50,7 @@ class RFIDService {
         // }, {});
         const groupedData = historyRecords.reduce((occurrences: Record<string, number>, record) => {
             const date = record.createdAt.toString().split("T")[0]; // Format to YYYY-MM-DD
+            // occurrences[date] = (occurrences[date] || 0) + 1;
             occurrences[date] = (occurrences[date] || 0) + 1;
             return occurrences;
         }, {});
@@ -65,10 +66,18 @@ class RFIDService {
         //     createdAt,
         //     rfid_uid: count,
         // }));
-        return Object.entries(groupedData).map(([createdAt, count]) => ({
+        const rfids = Object.entries(groupedData).map(([createdAt, count]) => ({
             createdAt,
             rfid_uid: count,
         }));
+
+        // Compute the total sum of all rfid_uid values
+        const totalRFIDUID = rfids.reduce((sum, item) => sum + item.rfid_uid, 0);
+
+        return {
+            rfids,
+            totalRFIDUID
+        }
     }
 
 }
