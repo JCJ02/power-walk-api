@@ -83,7 +83,9 @@ class HardwareController {
     // GET THE ELECTRICITY GENERATED AND CONSUMPTION PER DAY FUNCTION
     async getElectricityMeter(req: Request, res: Response) {
         try {
-            const electricityMeter = await this.hardwareService.getElectricityMeter();
+            const { from, to } = req.query as { from?: string, to?: string };
+
+            const electricityMeter = await this.hardwareService.getElectricityMeter(from, to);
 
             return AppResponse.sendSuccessful({
                 res,

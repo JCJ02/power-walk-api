@@ -41,8 +41,9 @@ class HardwareService {
     }
 
     // GET THE ELECTRICITY GENERATED AND CONSUMPTION PER DAY FUNCTION
-    async getElectricityMeter() {
-        const electricityData = await this.hardwareRepository.getElectricityMeter();
+    async getElectricityMeter(fromDate?: string, toDate?: string) {
+        // const electricityData = await this.hardwareRepository.getElectricityMeter();
+        const electricityData = await this.hardwareRepository.getElectricityMeter(fromDate, toDate);
 
         // Group results manually by date (since Prisma groups by full DateTime)
         const groupedData: Record<string, { totalElectricityGeneratedToday: number, totalElectricityConsumptionToday: number }> = {};
